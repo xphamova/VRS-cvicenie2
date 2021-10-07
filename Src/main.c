@@ -54,32 +54,30 @@ int main(void)
   //Set no pull for GPIOB pin 3
   *((volatile uint32_t *)((uint32_t)(0x48000400 + 0x0CU))) &= ~(0x3 << 6);
 
-  while (1)
-  {
-	  //GPIO IDR, read input from pin 6
-	  if(!(*((volatile uint32_t *)((uint32_t)(0x48000400 + 0x10U))) & (1 << 6)))
-	  {
-		  //GPIO BSRR register, set output pin 3
-		  LED_ON;
-		  //delay
-		  for(uint16_t i = 0; i < 0xFF00; i++){}
-		  //GPIO BRR, reset output pin 3
-		  LED_OFF;
-		  //delay
-		  for(uint16_t i = 0; i < 0xFF00; i++){}
-	  }
-	  else
-	  {
-		  //GPIO BSRR register, set output pin 3
-		  LED_ON;
-		  //delay
-		  for(uint32_t i = 0; i < 0xFFFF0; i++){}
-		  //GPIO BRR, reset output pin 3
-		  LED_OFF;
-		  //delay
-		  for(uint32_t i = 0; i < 0xFFF00; i++){}
-	  }
+   while (1)
+    {
+  	  if(BUTTON_GET_STATE)
+  	  {
+  		  // 0.25s delay
+  		  LL_mDelay(250);
+  		  LED_ON;
+  		  // 0.25s delay
+  		  LL_mDelay(250);
+  		  LED_OFF;
+  	  }
+  	  else
+  	  {
+  		  // 1s delay
+  		  LL_mDelay(1000);
+  		  LED_ON;
+  		  // 1s delay
+  		  LL_mDelay(1000);
+  		  LED_OFF;
+  	  }
+    }
+
   }
+}
 
 }
 
